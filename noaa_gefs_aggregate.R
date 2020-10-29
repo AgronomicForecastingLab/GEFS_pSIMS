@@ -2,7 +2,7 @@ vars <- c("tmax", "tmin", "prcp", "tdew", "wind", "srad", "tavg")
 
 funcs <- c("max", "min", "mean", "sum", "mean", "sum", "mean")
 
-for (x in seq_len(length(data))) {
+agg_site_data <- function(data) {
   for (i in seq_len(length(vars))) {
     data[[x]][, c("time", vars[i] )] <- Agg.t(
       data = data[[x]][, c("time", vars[i])],
@@ -14,4 +14,5 @@ for (x in seq_len(length(data))) {
       namePlot = "Temporal aggregation of variable."
     )
   }
+  return(data)
 }
