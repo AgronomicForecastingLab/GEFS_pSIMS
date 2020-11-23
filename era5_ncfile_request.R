@@ -1,24 +1,35 @@
-request <- list(
-  product_type = "reanalysis",
-  format = "netcdf",
-  variable = c("10m_u_component_of_wind", "10m_v_component_of_wind", 
-               "2m_dewpoint_temperature", "2m_temperature",
-               "maximum_2m_temperature_since_previous_post_processing", 
-               "minimum_2m_temperature_since_previous_post_processing", 
-               "surface_solar_radiation_downwards", "total_precipitation"),
-  year = "2020",
-  month = "11",
-  day = "01",
-  time = c("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00"
-           , "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00"
-           , "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"
-           , "21:00", "22:00", "23:00"),
-  dataset_short_name = "reanalysis-era5-single-levels",
-  target = "download.nc"
-)
+req_func <- function(site_coord) {
+  request <- list(
+    product_type = "reanalysis",
+    format = "netcdf",
+    area = site_coord,
+    variable = c("10m_u_component_of_wind", "10m_v_component_of_wind", 
+                 "2m_dewpoint_temperature", "2m_temperature",
+                 "maximum_2m_temperature_since_previous_post_processing", 
+                 "minimum_2m_temperature_since_previous_post_processing", 
+                 "surface_solar_radiation_downwards", "total_precipitation"),
+    year = "2020",
+    month = c(1:month(Sys.Date())), 
+    day = c(1:30),
+    time = c("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00"
+             , "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00"
+             , "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"
+             , "21:00", "22:00", "23:00"),
+    dataset_short_name = "reanalysis-era5-single-levels",
+    target = "download.nc"
+  )
+  return(request)
+}
 
-ncfile <- wf_request(user = "-----",
-                     request = request,   
-                     transfer = TRUE,  
-                     path = "~",
-                     verbose = FALSE)
+for (r in 1:nrow(sites)) {
+  site_coord <- c(sites[i, 'Lat'], 
+                  sites[i, 'Lon']-0.01,
+                  sites[i, 'Lat']-0.01,
+                  sites[i, 'Lon'])
+  request <- req_func(site_coord)
+  ncfile <- wf_request(user = "67047",
+                       request = request,   
+                       transfer = TRUE,  
+                       path = "~",
+                       verbose = FALSE)
+}
