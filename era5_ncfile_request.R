@@ -1,4 +1,4 @@
-req_func <- function(site_coord) {
+req_func <- function(site_coord, dates) {
   request <- list(
     product_type = "reanalysis",
     format = "netcdf",
@@ -8,9 +8,9 @@ req_func <- function(site_coord) {
                  "maximum_2m_temperature_since_previous_post_processing", 
                  "minimum_2m_temperature_since_previous_post_processing", 
                  "surface_solar_radiation_downwards", "total_precipitation"),
-    year = "2020",
-    month = c(1:month(Sys.Date())), 
-    day = c(1:30),
+    year = unique(format(dates, format="%Y")),
+    month = unique(format(dates, format="%m")),
+    day = unique(format(dates, format="%d")), 
     time = c("00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00"
              , "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00"
              , "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00"
@@ -21,15 +21,19 @@ req_func <- function(site_coord) {
   return(request)
 }
 
-for (r in 1:nrow(sites)) {
-  site_coord <- c(sites[i, 'Lat'], 
-                  sites[i, 'Lon']-0.01,
-                  sites[i, 'Lat']-0.01,
-                  sites[i, 'Lon'])
-  request <- req_func(site_coord)
-  ncfile <- wf_request(user = "67047",
-                       request = request,   
-                       transfer = TRUE,  
-                       path = "~",
-                       verbose = FALSE)
+
+era5_ncfile_req <- function(sdate, edate, sites) {
+  for (r in 1:nrow(sites)) {
+    site_coord <- c(sites[i, 'Lat'], 
+                    sites[i, 'Lon']-0.01,
+                    sites[i, 'Lat']-0.01,
+                    sites[i, 'Lon'])
+    dates <- seq(as.Date(sdate), as.Date(edate), by="days")
+    request <- req_func(site_coord, dates)
+    ncfile <- wf_request(user = "67047",
+                         request = request,   
+                         transfer = TRUE,  
+                         path = "~",
+                         verbose = FALSE)
+}
 }
