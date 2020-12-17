@@ -23,17 +23,20 @@ req_func <- function(site_coord, dates) {
 
 
 era5_ncfile_req <- function(sdate, edate, sites) {
+  df_list <- data.frame()
   for (r in 1:nrow(sites)) {
-    site_coord <- c(sites[i, 'Lat'], 
-                    sites[i, 'Lon']-0.01,
-                    sites[i, 'Lat']-0.01,
-                    sites[i, 'Lon'])
+    site_coord <- c(sites[r, 'Lat'], 
+                    sites[r, 'Lon']-0.01,
+                    sites[r, 'Lat']-0.01,
+                    sites[r, 'Lon'])
     dates <- seq(as.Date(sdate), as.Date(edate), by="days")
-    request <- req_func(site_coord, dates)
+    req <- req_func(site_coord, dates)
     ncfile <- wf_request(user = "67047",
-                         request = request,   
+                         request = req,   
                          transfer = TRUE,  
                          path = "~",
                          verbose = FALSE)
-}
+    df_list[[r]] <- as.data.frame(read_ncdf(ncfile))
+  }
+  return(df_list)
 }
