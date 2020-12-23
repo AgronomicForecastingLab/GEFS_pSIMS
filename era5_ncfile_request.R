@@ -21,9 +21,8 @@ req_func <- function(site_coord, dates) {
   return(request)
 }
 
-
 era5_ncfile_req <- function(sdate, edate, sites) {
-  df_list <- data.frame()
+  df_list <- vector("list", nrow(sites))
   for (r in 1:nrow(sites)) {
     site_coord <- c(sites[r, 'Lat'], 
                     sites[r, 'Lon']-0.01,
