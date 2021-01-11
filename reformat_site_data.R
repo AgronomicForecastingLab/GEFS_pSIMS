@@ -1,4 +1,4 @@
-reformat_site_data <- function(data) {
+reformat_ERA_data <- function(data) {
   for (x in seq_len(length(data))) {
     data[[x]]$tmax <- drop_units(data[[x]]$mx2t) - 273.15
     data[[x]]$tmin <- drop_units(data[[x]]$mn2t) - 273.15
