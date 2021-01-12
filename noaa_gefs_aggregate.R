@@ -1,5 +1,6 @@
-vars <- c("tmax", "tmin", "prcp", "tdew", "wind", "srad", "tavg")
+library(stUPscales)
 
+vars <- c("tmax", "tmin", "prcp", "tdew", "wind", "srad", "tavg")
 funcs <- c("max", "min", "mean", "sum", "mean", "sum", "mean")
 
 agg_site_data <- function(data) {
