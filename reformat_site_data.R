@@ -9,11 +9,13 @@ reformat_ERA_data <- function(data) {
     data[[x]]$srad <- drop_units(data[[x]]$ssrd)
     data[[x]]$wind <- sqrt(drop_units(data[[x]]$u10)^2 + drop_units(data[[x]]$v10)^2)
   }
+  data <- lapply(data, function(x) x[!(names(x) %in% drops)])
   return(data)
 }
 
 reformat_NOAA_data <- function(data) {
-  drops <- c("tmax2m","tmin2m", "tmp2m", "rh2m", "apcpsfc", "wind_speed", "dswrfsfc")
+  drops <- c("tmax2m","tmin2m", "tmp2m", "rh2m", "apcpsfc", "wind_speed", 
+             "dswrfsfc", "dlwrfsfc", "ensmbles")
   for (x in seq_len(length(data))) {
     data[[x]]$tmax <- (data[[x]]$tmax2m - 273.15)
     data[[x]]$tmin <- (data[[x]]$tmin2m - 273.15)
@@ -23,5 +25,6 @@ reformat_NOAA_data <- function(data) {
     data[[x]]$srad <- (data[[x]]$dswrfsfc)
     data[[x]]$tavg <- ((data[[x]]$tmax + data[[x]]$tmin) / 2)
   }
+  data <- lapply(data, function(x) x[!(names(x) %in% drops)])
   return(data)
 }
