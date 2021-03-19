@@ -13,7 +13,7 @@ era5_ncfile_request <- function(sdate, edate, sites) {
                     sites[r, 'Lat']-0.01,
                     sites[r, 'Lon'])
     dates <- seq(as.Date(sdate), as.Date(edate), by="days")
-    req <- req_func(site_coord, dates)
+    req <- era5_request(site_coord, dates)
     ncfile <- wf_request(user = "67047",
                          request = req,
                          transfer = TRUE,
