@@ -1,3 +1,8 @@
+library(pSIMSMetMaker)
+
+sites.path <- system.file("", 'sites.csv', package = "pSIMSMetMaker")
+
+sites.path <- read.csv(sites.path)
 # Package workflow demo:
 
 # Request ERA5 data
