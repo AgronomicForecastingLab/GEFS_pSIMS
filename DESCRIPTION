@@ -2,6 +2,7 @@ Package: pSIMSMetMaker
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
+Depends: ecmwfr,stars, units, dplyr, purrr
 Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
