@@ -28,4 +28,4 @@ noaa_gefs_aggregate <- function(data) {
   return(data)
 }
 
-}
+
