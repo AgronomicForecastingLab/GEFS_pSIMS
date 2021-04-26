@@ -4,7 +4,7 @@
 \alias{bind_NOAA_ERA}
 \title{Binds NOAA GEFS and ERA5 weather data.}
 \usage{
-bind_NOAA_ERA(start)
+bind_NOAA_ERA(era_data, NOAA_data)
 }
 \arguments{
 \item{start}{Start date of dates requested}
