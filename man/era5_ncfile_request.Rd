@@ -4,9 +4,11 @@
 \alias{era5_ncfile_request}
 \title{Request ERA5 hourly weather data ncfiles}
 \usage{
-era5_ncfile_request(sdate, edate, sites)
+era5_ncfile_request(user, sdate, edate, sites)
 }
 \arguments{
+\item{user}{character, username}
+
 \item{sdate}{Start date of hourly data}
 
 \item{edate}{End date of hourly data}

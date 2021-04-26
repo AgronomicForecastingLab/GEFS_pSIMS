@@ -1,6 +1,6 @@
 library(pSIMSMetMaker)
-sites.path <- system.file("", 'sites.csv', package = "pSIMSMetMaker")
-sites <- read.csv(sites.path)
+sites.path <- system.file("", 'pSIMS_extent.RData', package = "pSIMSMetMaker")
+load(sites.path)
 #------------------------------------------------- ERA - NEEDS LOGIN
 #Login setup
 #Create a free CDS user account by self registering.
@@ -10,13 +10,19 @@ sites <- read.csv(sites.path)
 user <- "10027"
 wf_set_key(user = user, key = "e5d0082f-ae4d-44d6-a1e0-3b581282033f", 'cds')
 
-debugonce(noaa_gefs_aggregate)
+debugonce(ERA5_aggregate)
 # Request ERA5 data
-era5_data <- era5_ncfile_request(user, "2019-12-01", "2019-12-02", sites[1,])
+era5_data <- era5_tile_request(user, "2020-01-01", "2020-12-31",
+                               pSIMS.extent$xmin[1], pSIMS.extent$xmax[1],
+                               pSIMS.extent$ymin[1], pSIMS.extent$ymax[1])
 # Reformat ERA5 data
 era5_data_refmt <- reformat_ERA_data(era5_data)
-#This dunction works for both NOAA and ERA5 given that both are reformted to the same format
-era5_data_Agg <-noaa_gefs_aggregate(era5_data_refmt)
+#Aggregate the ERA5 data
+era5_data_Agg <- ERA5_aggregate(era5_data_refmt)
+
+
+pSIMSMetMaker::write_met(era5_data_Agg[[1]], 'clim_0022_0029.tile.nc4')
+
 
 #--------------------------------------------------- NOAA gets
 # Request NOAA GEFS data
