@@ -88,8 +88,8 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
 
   if(day_diff > 365){
 
-    reqs <-  cbind(seq(sYear, eYear, year_per_req),
-          lead(seq(sYear, eYear, year_per_req))
+    reqs <- cbind(seq(sYear, eYear, year_per_req),
+                  lead(seq(sYear, eYear, year_per_req)-1)
     ) %>%
       as.data.frame() %>%
       filter(!is.na(V2)) %>%
