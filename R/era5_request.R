@@ -7,7 +7,7 @@
 #' @param dates Sequence of R "Date" class objects.
 #' @return A dataframe of the requested site variables.
 #' @export
-era5_request <- function(site_coord, dates) {
+era5_request <- function(site_coord, dates, fname="download.nc") {
   request <- list(
     product_type = "ensemble_members",
     format = "netcdf",
@@ -24,7 +24,7 @@ era5_request <- function(site_coord, dates) {
              '09:00','12:00','15:00',
              '18:00','21:00'),
     dataset_short_name = "reanalysis-era5-single-levels",
-    target = "download.nc"
+    target = fname
   )
   return(request)
 }

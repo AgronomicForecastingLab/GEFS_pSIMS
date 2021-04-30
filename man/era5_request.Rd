@@ -4,7 +4,7 @@
 \alias{era5_request}
 \title{Download ERA5 hourly weather data.}
 \usage{
-era5_request(site_coord, dates)
+era5_request(site_coord, dates, fname = "download.nc")
 }
 \arguments{
 \item{site_coord}{Site lon/lat vector (max lat, min lon, min lat, max lon)}
