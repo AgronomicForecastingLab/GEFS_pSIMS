@@ -32,11 +32,11 @@ write_met<- function(Metdata, filename='test.nc4'){
 
   #create the variables
   vars.list <- purrr::map2(vars, units, function(var, unit){
-    ncvar_def(var, units = unit, dim = list(latdim, londim, scendim, timedim))
+    ncvar_def(var, units = unit, dim = list(latdim, londim, timedim, scendim))
   })
 
   #add crop land
-  cropv <- ncvar_def('cropland', units = 'percent', dim = list(latdim, londim, scendim, timedim))
+  cropv <- ncvar_def('cropland', units = 'percent', dim = list(latdim, londim, timedim, scendim))
   vars.list <- c(vars.list, list(cropv))
 
   ## create, write to, close nc file
@@ -50,11 +50,11 @@ write_met<- function(Metdata, filename='test.nc4'){
 
     tmp_d <- Metdata %>%
       dplyr::select(var, lat, lon, number, time)%>%
-      split(.$time) %>%
+      split(.$number) %>%
       map(function(one.time){
 
         one.time %>%
-          split(.$number) %>%
+          split(.$time) %>%
           purrr::map(~.x %>% `colnames<-`(c(var, "y","x","scen","time"))) %>%
           purrr::map(~ raster::rasterFromXYZ(.x %>% dplyr::select(x,y,z=var)) %>% raster::as.matrix(.) %>% rotate %>% rotate) %>%
           simplify2array()

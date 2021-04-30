@@ -13,8 +13,8 @@ reformat_ERA_data <- function(data) {
     data[[x]]$tmin <- units::drop_units(data[[x]]$mn2t) - 273.15
     data[[x]]$tdew <- units::drop_units(data[[x]]$d2m) - 273.15
     data[[x]]$tavg <- units::drop_units(data[[x]]$t2m)- 273.15
-    data[[x]]$prcp <- units::drop_units(data[[x]]$tp)
-    data[[x]]$srad <- units::drop_units(data[[x]]$ssrd)
+    data[[x]]$prcp <- units::drop_units(data[[x]]$tp) *1000 #m to mm
+    data[[x]]$srad <- units::drop_units(data[[x]]$ssrd)/86400 #J/m2 to wm2
     data[[x]]$wind <- sqrt(units::drop_units(data[[x]]$u10)^2 + units::drop_units(data[[x]]$v10)^2)
   }
   data <- lapply(data, function(x) x[!(names(x) %in% drops)])

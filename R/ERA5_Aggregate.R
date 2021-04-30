@@ -10,7 +10,7 @@
 #'
 ERA5_aggregate <- function(data) {
   vars <- c("tmax", "tmin", "prcp", "tdew", "wind", "srad",  "tavg")
-  funcs <- c("max", "min", "mean", "mean", "mean", "sum", "mean")
+  funcs <- c("max", "min", "sum", "mean", "mean", "sum", "mean")
 
   for (x in seq_len(length(data))) {
     # Removes NA values from df
