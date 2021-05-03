@@ -89,7 +89,7 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
   if(day_diff > 365){
 
     reqs <- cbind(seq(sYear, eYear, year_per_req),
-                  lead(seq(sYear, eYear, year_per_req)-1)
+                  lead(seq(sYear, eYear+1, year_per_req)-1)
     ) %>%
       as.data.frame() %>%
       filter(!is.na(V2)) %>%
@@ -99,7 +99,8 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
     print(reqs)
 
     all.d <-reqs%>%
-      future_pmap(function(sYear, eYear){
+      future_pmap(possibly(function(sYear, eYear){
+
 
         wf_set_key(user = user, key = key, 'cds')
 
@@ -110,12 +111,15 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
         #fname for each Year
         fname <- paste0(fname, "_", sYear, ".nc")
 
+        if(file.exists(file.path(pathi, fname))) return(NULL)
+
         req <- era5_request(site_coord, dates, fname)
 
         ncfile <- wf_request(user = user,
                              request = req,
                              transfer = TRUE,
                              path = pathi,
+                             time_out = 3600*10,
                              verbose = FALSE)
         #Readin the file
         df_list <- as.data.frame(stars::read_ncdf(ncfile))
@@ -125,7 +129,7 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
         df_list$time <- df_list$time + error_in_time
 
         return(df_list)
-      })
+      }, otherwise = NULL))
   }
 
 
