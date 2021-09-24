@@ -29,7 +29,7 @@ era5_tile_request <- function(user, sdate, edate, xmin, xmax, ymin, ymax, pathi=
     df_list <- as.data.frame(stars::read_ncdf(ncfile))
 
     #When reading the ncdf file, there is usually an issue with time. We fix that here
-    error_in_time <- as.POSIXct(sdate) - df_list$time[1]
+    error_in_time <- as.POSIXct(sdate, tz=lubridate::tz(df_list$time[1]))  - df_list$time[1]
     df_list$time <- df_list$time + error_in_time
 
   return(list(df_list))
@@ -48,7 +48,7 @@ era5_tile_read <- function(ncfile="~/download.nc", sdate) {
   df_list <- as.data.frame(stars::read_ncdf(ncfile))
 
   #When reading the ncdf file, there is usually an issue with time. We fix that here
-  error_in_time <- as.POSIXct(sdate) - df_list$time[1]
+  error_in_time <- as.POSIXct(sdate, tz=lubridate::tz(df_list$time[1]))  - df_list$time[1]
   df_list$time <- df_list$time + error_in_time
 
   return(list(df_list))
@@ -125,7 +125,7 @@ era5_tile_request_multiYear <- function(user,key, sdate, edate, xmin, xmax, ymin
         df_list <- as.data.frame(stars::read_ncdf(ncfile))
 
         #When reading the ncdf file, there is usually an issue with time. We fix that here
-        error_in_time <- as.POSIXct(nsdate) - df_list$time[1]
+        error_in_time <- as.POSIXct(sdate, tz=lubridate::tz(df_list$time[1]))  - df_list$time[1]
         df_list$time <- df_list$time + error_in_time
 
         return(df_list)
