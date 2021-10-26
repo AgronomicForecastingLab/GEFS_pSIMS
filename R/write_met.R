@@ -58,7 +58,7 @@ write_met<- function(Metdata, filename='test.nc4'){
         one.time %>%
           split(.$time) %>%
           purrr::map(~.x %>% `colnames<-`(c(var, "y","x","scen","time"))) %>%
-          purrr::map(~ raster::rasterFromXYZ(.x %>% dplyr::select(x,y,z=var)) %>% raster::as.matrix(.) %>% rotate %>% rotate) %>%
+          purrr::map(~ raster::rasterFromXYZ(.x %>% dplyr::select(x,y,z=var)) %>% raster::as.matrix(.) %>% rotate) %>%
           simplify2array()
       }, .progress = TRUE) %>%
       simplify2array()
