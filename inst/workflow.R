@@ -13,7 +13,7 @@ load(sites.path)
 job::job({
      i <- 3
     user <- Sys.getenv("CDS_USER_ID")
-    wf_set_key(user = user, key = "<CDS_API_KEY_REDACTED>", 'cds')
+    wf_set_key(user = user, key = Sys.getenv("CDS_API_KEY"), 'cds')
 
     sites <- pSIMS.extent %>%
       dplyr::filter(name %in% c('0024/0045', '0024/0046', '0025/0046'))
